@@ -4,10 +4,12 @@ import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 
 public class Wget implements Runnable {
     private final String url;
     private final int speed;
+    private final int ms = 1000;
 
     public Wget(String url, int speed) {
         this.url = url;
@@ -18,22 +20,24 @@ public class Wget implements Runnable {
     public void run() {
         long start;
         long end;
+        long time;
+        Path path = Path.of(url);
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream("pom_tmp.xml")) {
-            byte[] dataBuffer = new byte[speed];
+             FileOutputStream fileOutputStream = new FileOutputStream(String.valueOf(path.getFileName()))) {
+            byte[] dataBuffer = new byte[1024];
             int bytesRead;
-            while (true) {
+            int downloadData = 0;
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 start = System.currentTimeMillis();
-                bytesRead = in.read(dataBuffer, 0, 1024);
-                end = System.currentTimeMillis();
-                if (bytesRead == -1) {
-                    break;
+                downloadData += bytesRead;
+                if (downloadData == speed) {
+                    end = System.currentTimeMillis();
+                    time = end - start;
+                    if (time < ms) {
+                        Thread.sleep(ms - time);
+                    }
                 }
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
-                long time = end - start;
-                if (time < speed) {
-                    Thread.sleep(1000 - time);
-                }
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
