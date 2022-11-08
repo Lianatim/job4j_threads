@@ -36,6 +36,8 @@ public class Wget implements Runnable {
                     if (time < ms) {
                         Thread.sleep(ms - time);
                     }
+                    downloadData = 0;
+                    start = System.currentTimeMillis();
                 }
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
