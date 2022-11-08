@@ -3,18 +3,17 @@ package ru.job4j.concurrent;
 public class ThreadState {
     public static void main(String[] args) {
         Thread first = new Thread(
-                () -> {
-                });
+                () -> System.out.println(Thread.currentThread().getName())
+        );
         Thread second = new Thread(
-                () -> {
-                });
+                () -> System.out.println(Thread.currentThread().getName())
+        );
         first.start();
         second.start();
-
-        System.out.println("Thread first: " + first.getName());
-        System.out.println("Thread second: " + second.getName());
-        if (first.getState() == Thread.State.TERMINATED && second.getState() == Thread.State.TERMINATED) {
-            System.out.println("Работа завершена");
+        while (first.getState() != Thread.State.TERMINATED && second.getState() != Thread.State.TERMINATED) {
+            System.out.println("Состояние первой нити:" + first.getState());
+            System.out.println("Состояние второй нити:" + second.getState());
         }
+        System.out.println("Работа завершена");
     }
 }
