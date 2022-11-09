@@ -9,7 +9,7 @@ import java.nio.file.Path;
 public class Wget implements Runnable {
     private final String url;
     private final int speed;
-    private final int ms = 1000;
+    private static final int MS = 1000;
 
     public Wget(String url, int speed) {
         this.url = url;
@@ -27,14 +27,14 @@ public class Wget implements Runnable {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             int downloadData = 0;
+            start = System.currentTimeMillis();
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                start = System.currentTimeMillis();
                 downloadData += bytesRead;
-                if (downloadData == speed) {
+                if (downloadData >= speed) {
                     end = System.currentTimeMillis();
                     time = end - start;
-                    if (time < ms) {
-                        Thread.sleep(ms - time);
+                    if (time < MS) {
+                        Thread.sleep(MS - time);
                     }
                     downloadData = 0;
                     start = System.currentTimeMillis();
