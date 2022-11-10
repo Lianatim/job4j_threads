@@ -19,11 +19,7 @@ public class AccountStorage {
     }
 
     public synchronized Optional<Account> getById(int id) {
-        Optional<Account> rsl = Optional.empty();
-        if (accounts.containsKey(id)) {
-            rsl = Optional.of(accounts.get(id));
-        }
-        return rsl;
+        return Optional.ofNullable(accounts.get(id));
     }
 
     public synchronized boolean transfer(int fromId, int toId, int amount) {
