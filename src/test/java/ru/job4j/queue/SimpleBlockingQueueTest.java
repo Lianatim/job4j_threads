@@ -34,6 +34,9 @@ class SimpleBlockingQueueTest {
         producer.start();
         producer1.start();
         consumer.start();
+        producer.join();
+        producer1.join();
+        consumer.join();
         assertThat(sbq.poll()).isEqualTo(2);
     }
 }
