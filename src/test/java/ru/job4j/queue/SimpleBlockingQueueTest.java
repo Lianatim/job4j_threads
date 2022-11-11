@@ -12,7 +12,7 @@ class SimpleBlockingQueueTest {
 
     @Test
     void whenAddThenDelete() throws InterruptedException {
-        SimpleBlockingQueue sbq = new SimpleBlockingQueue<Integer>(2);
+        SimpleBlockingQueue<Integer> sbq = new SimpleBlockingQueue<>(2);
         Thread producer = new Thread(() -> {
             try {
                 sbq.offer(1);
