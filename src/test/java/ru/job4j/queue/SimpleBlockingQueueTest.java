@@ -3,13 +3,12 @@ package ru.job4j.queue;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleBlockingQueueTest {
 
     @Test
     void whenAddThenDelete() throws InterruptedException {
-        SimpleBlockingQueue sbq = new SimpleBlockingQueue<>(2);
+        SimpleBlockingQueue sbq = new SimpleBlockingQueue<Integer>(2);
         Thread producer = new Thread(() -> {
             try {
                 sbq.offer(1);
