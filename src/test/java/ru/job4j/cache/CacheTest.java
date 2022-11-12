@@ -3,6 +3,7 @@ package ru.job4j.cache;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CacheTest {
 
@@ -49,5 +50,16 @@ class CacheTest {
         thread2.start();
         thread2.join();
         assertThat(cache.get(1)).isNull();
+    }
+
+    @Test
+    void whenAddThenUpdateWithException() throws InterruptedException {
+        Cache cache = new Cache();
+        Base base2 = new Base(1, 1);
+        Base base3 = new Base(1, 2);
+        cache.add(base2);
+        assertThatThrownBy(() -> cache.update(base3))
+                .isInstanceOf(OptimisticException.class)
+                .hasMessageContaining("Versions are not equal");
     }
 }
