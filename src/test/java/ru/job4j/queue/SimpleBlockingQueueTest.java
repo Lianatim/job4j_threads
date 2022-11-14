@@ -11,39 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SimpleBlockingQueueTest {
 
     @Test
-    void whenAddThenDelete() throws InterruptedException {
-        SimpleBlockingQueue<Integer> sbq = new SimpleBlockingQueue<>(2);
-        Thread producer = new Thread(() -> {
-            try {
-                sbq.offer(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        Thread producer1 = new Thread(() -> {
-            try {
-                sbq.offer(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        Thread consumer = new Thread(() -> {
-            try {
-                sbq.poll();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        producer.start();
-        producer1.start();
-        consumer.start();
-        producer.join();
-        producer1.join();
-        consumer.join();
-        assertThat(sbq.poll()).isEqualTo(2);
-    }
-
-    @Test
     public void whenFetchAllThenGetIt() throws InterruptedException {
         final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
         final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(5);
