@@ -3,7 +3,6 @@ package ru.job4j.pools;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ParallelSearchIndexTest {
 
@@ -48,7 +47,7 @@ class ParallelSearchIndexTest {
     }
 
     @Test
-    void whenSortWithException() {
+    void whenSortWithMinus1() {
         Object object1 = new Object();
         Integer object2 = 3;
         Object object3 = new Object();
@@ -57,8 +56,6 @@ class ParallelSearchIndexTest {
         Object[] array = new Object[]{
                 object4, object1, object3, object2
         };
-        assertThatThrownBy(() -> ParallelSearchIndex.sort(array, notExist))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("The array does not contain an object");
+        assertThat(ParallelSearchIndex.sort(array, notExist)).isEqualTo(-1);
     }
 }

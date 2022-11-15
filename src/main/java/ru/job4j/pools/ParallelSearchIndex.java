@@ -19,9 +19,7 @@ public class ParallelSearchIndex<T> extends RecursiveTask<Integer> {
 
     @Override
     protected Integer compute() {
-        if (from == to) {
-            return from;
-        } else if (array.length < 10) {
+        if (to - from <= 10) {
             return findIndexLinear();
         }
         int mid = (from + to) / 2;
@@ -31,31 +29,18 @@ public class ParallelSearchIndex<T> extends RecursiveTask<Integer> {
         rightSort.fork();
         int left = leftSort.join();
         int right = rightSort.join();
-        return findIndex(left, right);
+        return Math.max(left, right);
     }
 
     public static <T> Integer sort(T[] array, T t) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         Integer rsl = forkJoinPool.invoke(new ParallelSearchIndex<>(array, t, 0, array.length - 1));
-        if (rsl == -1) {
-            throw new IllegalArgumentException("The array does not contain an object");
-        }
-        return rsl;
-    }
-
-    public int findIndex(int left, int right) {
-        int rsl = -1;
-        if (left != -1 && array[left].equals(t)) {
-            rsl = left;
-        } else if (right != -1 && array[right].equals(t)) {
-            rsl = right;
-        }
         return rsl;
     }
 
     public int findIndexLinear() {
         int rsl = -1;
-        for (int i = 0; i < array.length; i++) {
+        for (int i = from; i <= to; i++) {
             if (array[i].equals(t)) {
                 rsl = i;
                 break;
