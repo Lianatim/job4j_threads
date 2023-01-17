@@ -24,7 +24,7 @@ public class AccountStorage {
 
     public synchronized boolean transfer(int fromId, int toId, int amount) {
         boolean rsl = false;
-        String pattern = "Not found account by id = %d";
+        String pattern = "Not found account with id = %d";
         Account src = getById(fromId).orElseThrow(() -> new IllegalStateException(String.format(pattern, fromId)));
         Account dest = getById(toId).orElseThrow(() -> new IllegalStateException(String.format(pattern, toId)));
         if (src.amount() >= amount) {
