@@ -6,4 +6,5 @@
 - Thread без общих ресурсов
 - Wait, Notify, NotifyAll
 - Non Blocking Algoritm
-- Пулы
+- Пулы 
+- Объединение зафиксированных изменений
