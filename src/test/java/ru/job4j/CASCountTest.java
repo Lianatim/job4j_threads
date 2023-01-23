@@ -7,11 +7,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CASCountTest {
 
     @Test
-    public void whenIncrementAndGet() {
+    public void whenIncrementAndGet() throws InterruptedException {
         CASCount casCount = new CASCount();
-        for (int i = 0; i < 150; i++) {
-            new Thread(casCount::increment).start();
-        }
+        Thread thread = new Thread(() -> {
+            for (int j = 1; j < 150; j++) {
+                casCount.increment();
+            }
+        });
+        thread.start();
+        thread.join();
         assertThat(casCount.get()).isEqualTo(149);
     }
 
